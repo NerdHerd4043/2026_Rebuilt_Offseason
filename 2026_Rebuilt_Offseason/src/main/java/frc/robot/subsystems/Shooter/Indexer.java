@@ -18,12 +18,15 @@ public class Indexer extends SubsystemBase {
 
         indexerMotorConfig.idleMode(IdleMode.kBrake);
 
-        indexerMoter.configure(indexerMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        indexerMoter.configure(indexerMotorConfig, ResetMode.kResetSafeParameters,
+                PersistMode.kPersistParameters);
     }
 
-    public Command index() {
+    public Command indexCommand() {
         return this.run(() -> {
             indexerMoter.set(0.1);
-        }).finallyDo(() -> {indexerMoter.stopMotor;});
+        }).finallyDo(() -> {
+            indexerMoter.stopMotor();
+        });
     }
 }

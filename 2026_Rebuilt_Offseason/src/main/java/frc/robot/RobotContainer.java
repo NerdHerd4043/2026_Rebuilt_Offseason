@@ -5,6 +5,9 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.subsystems.RollerFloor.RollerFloor;
+import frc.robot.subsystems.Shooter.FlyWheel;
+import frc.robot.subsystems.Shooter.Indexer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -12,8 +15,12 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class RobotContainer {
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
-  private final CommandXboxController m_driverController = new CommandXboxController(
+  private final CommandXboxController m_XBoxController = new CommandXboxController(
       OperatorConstants.kDriverControllerPort);
+
+  FlyWheel flyWheel = new FlyWheel();
+  RollerFloor rollerFloor = new RollerFloor();
+  Indexer indexer = new Indexer();
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -38,7 +45,11 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
+    m_XBoxController.a().whileTrue(flyWheel.runCommand());
 
+    m_XBoxController.b().whileTrue(rollerFloor.feedCommand());
+
+    m_XBoxController.x().whileTrue(indexer.indexCommand());
   }
 
   /**
