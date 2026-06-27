@@ -31,7 +31,7 @@ public class FlyWheel extends SubsystemBase {
 
     public Command runCommand() {
         return this.run(() -> {
-            rightFlyWheelMotor.set(0.1);
+            rightFlyWheelMotor.set(1);
         }).finallyDo(() -> {
             rightFlyWheelMotor.stopMotor();
         });
