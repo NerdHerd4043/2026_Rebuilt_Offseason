@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class RollerFloor extends SubsystemBase {
-    private SparkMax rollerFloorMotor = new SparkMax(1, MotorType.kBrushless);
+    private SparkMax rollerFloorMotor = new SparkMax(RollerFloorConstants.rollerFloorMotorID, MotorType.kBrushless);
 
     public RollerFloor() {
         final SparkMaxConfig rollerFloorMotorConfig = new SparkMaxConfig();
@@ -24,7 +24,7 @@ public class RollerFloor extends SubsystemBase {
 
     public Command feedCommand() {
         return this.run(() -> {
-            rollerFloorMotor.set(0.1);
+            rollerFloorMotor.set(RollerFloorConstants.rollerFloorSpeed);
         }).finallyDo(() -> {
             rollerFloorMotor.stopMotor();
         });

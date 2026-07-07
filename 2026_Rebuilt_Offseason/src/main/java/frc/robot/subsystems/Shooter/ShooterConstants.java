@@ -12,7 +12,7 @@ public final class ShooterConstants {
         public static final int kS = 0;
         public static final int kV = 0;
 
-        public static final double flyWheelSpeed = 2000.0; // In RPM
+        public static final double flyWheelSpeed = 2000.0;
 
     }
 
