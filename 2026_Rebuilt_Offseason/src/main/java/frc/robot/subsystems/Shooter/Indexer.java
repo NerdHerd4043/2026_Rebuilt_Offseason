@@ -11,8 +11,10 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
+import frc.robot.subsystems.Shooter.ShooterConstants.IndexerConstants;
+
 public class Indexer extends SubsystemBase {
-    private SparkMax indexerMoter = new SparkMax(4, MotorType.kBrushless);
+    private SparkMax indexerMoter = new SparkMax(IndexerConstants.indexerMoterID, MotorType.kBrushless);
 
     public Indexer() {
         final SparkMaxConfig indexerMotorConfig = new SparkMaxConfig();
@@ -25,7 +27,7 @@ public class Indexer extends SubsystemBase {
 
     public Command indexCommand() {
         return this.run(() -> {
-            indexerMoter.set(0.1);
+            indexerMoter.set(IndexerConstants.indexerMoterSpeed);
         }).finallyDo(() -> {
             indexerMoter.stopMotor();
         });

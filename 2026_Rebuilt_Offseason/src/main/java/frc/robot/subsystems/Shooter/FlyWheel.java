@@ -56,7 +56,7 @@ public class FlyWheel extends SubsystemBase {
 
     public Command runFlyWheel() {
         return this.run(() -> {
-            pidController.setSetpoint(2000, ControlType.kVelocity);
+            pidController.setSetpoint(FlyWheelConstants.flyWheelSpeed, ControlType.kVelocity);
         }).finallyDo(() -> {
             pidController.setSetpoint(0, ControlType.kVoltage);
         });
