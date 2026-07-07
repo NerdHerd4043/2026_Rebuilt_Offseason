@@ -45,7 +45,7 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    m_XBoxController.a().whileTrue(flyWheel.runCommand());
+    m_XBoxController.rightBumper().whileTrue(flyWheel.runFlyWheel());
 
     m_XBoxController.b().whileTrue(rollerFloor.feedCommand());
 

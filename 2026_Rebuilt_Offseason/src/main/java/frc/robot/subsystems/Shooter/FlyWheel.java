@@ -2,7 +2,9 @@ package frc.robot.subsystems.Shooter;
 
 import com.revrobotics.PersistMode;
 import com.revrobotics.ResetMode;
+import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkFlex;
+import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkFlexConfig;
 
@@ -11,13 +13,22 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
+import frc.robot.subsystems.Shooter.ShooterConstants.FlyWheelConstants;
+
 public class FlyWheel extends SubsystemBase {
-    private SparkFlex leftFlyWheelMotor = new SparkFlex(2, MotorType.kBrushless);
-    private SparkFlex rightFlyWheelMotor = new SparkFlex(3, MotorType.kBrushless);
+    private SparkFlex leftFlyWheelMotor = new SparkFlex(FlyWheelConstants.leftFlyWheelMotorID, MotorType.kBrushless);
+    private SparkFlex rightFlyWheelMotor = new SparkFlex(FlyWheelConstants.rightFlyWheelMotorID, MotorType.kBrushless);
+
+    private SparkClosedLoopController pidController = rightFlyWheelMotor.getClosedLoopController();
 
     public FlyWheel() {
         final SparkFlexConfig leftFlyWheelMotorConfig = new SparkFlexConfig();
         final SparkFlexConfig rightFlyWheelMotorConfig = new SparkFlexConfig();
+
+        rightFlyWheelMotorConfig.closedLoop
+                .p(FlyWheelConstants.P)
+                .i(FlyWheelConstants.I)
+                .d(FlyWheelConstants.D);
 
         rightFlyWheelMotorConfig.idleMode(IdleMode.kCoast);
 
@@ -29,11 +40,19 @@ public class FlyWheel extends SubsystemBase {
                 PersistMode.kPersistParameters);
     }
 
-    public Command runCommand() {
+    // public Command runCommand() {
+    // return this.run(() -> {
+    // rightFlyWheelMotor.set(1);
+    // }).finallyDo(() -> {
+    // rightFlyWheelMotor.stopMotor();
+    // });
+    // }
+
+    public Command runFlyWheel() {
         return this.run(() -> {
-            rightFlyWheelMotor.set(1);
+            pidController.setSetpoint(2000, ControlType.kVelocity);
         }).finallyDo(() -> {
-            rightFlyWheelMotor.stopMotor();
+            pidController.setSetpoint(0, ControlType.kVoltage);
         });
     }
 }
