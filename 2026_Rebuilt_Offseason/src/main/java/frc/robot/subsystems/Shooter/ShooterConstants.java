@@ -8,6 +8,9 @@ public final class ShooterConstants {
         public static final int P = 0;
         public static final int I = 0;
         public static final int D = 0;
+
+        public static final int kS = 0;
+        public static final int kV = 0;
     }
 
     public static class IndexerConstants {

@@ -25,10 +25,16 @@ public class FlyWheel extends SubsystemBase {
         final SparkFlexConfig leftFlyWheelMotorConfig = new SparkFlexConfig();
         final SparkFlexConfig rightFlyWheelMotorConfig = new SparkFlexConfig();
 
+        // Assigning PID values
         rightFlyWheelMotorConfig.closedLoop
                 .p(FlyWheelConstants.P)
                 .i(FlyWheelConstants.I)
                 .d(FlyWheelConstants.D);
+
+        // Assigning feedforward values
+        rightFlyWheelMotorConfig.closedLoop.feedForward
+                .kS(FlyWheelConstants.kS)
+                .kV(FlyWheelConstants.kV);
 
         rightFlyWheelMotorConfig.idleMode(IdleMode.kCoast);
 
