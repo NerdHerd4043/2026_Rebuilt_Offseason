@@ -23,6 +23,8 @@ public class Intake extends SubsystemBase {
 
     private PIDController pidController = new PIDController(IntakeConstants.p, IntakeConstants.i, IntakeConstants.d);
 
+    private boolean resting = true;
+
     public Intake() {
         final SparkMaxConfig intakingMotorConfig = new SparkMaxConfig();
         final SparkFlexConfig articulatingMotorConfig = new SparkFlexConfig();
@@ -46,10 +48,20 @@ public class Intake extends SubsystemBase {
         });
     }
 
+    public void intakeToStartAngle() {
+        pidController.setSetpoint(IntakeConstants.startingAngle);
+    }
+
+    public void intakeToIntakeAngle() {
+        pidController.setSetpoint(IntakeConstants.intakeAngle);
+    }
+
     @Override
     public void periodic() {
 
-        articulatingMotor.setVoltage(pidController.calculate(absEncoder.getPosition() * 360));
+        if (!resting || !pidController.atSetpoint()) {
+            articulatingMotor.setVoltage(pidController.calculate(absEncoder.getPosition() * 360));
+        }
 
         super.periodic();
     }

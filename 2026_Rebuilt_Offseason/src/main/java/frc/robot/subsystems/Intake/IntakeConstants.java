@@ -6,7 +6,10 @@ public class IntakeConstants {
 
     public static final double intakeSpeed = 0.2;
 
-    public static final double p = 0;
-    public static final double i = 0;
-    public static final double d = 0;
+    public static final double startingAngle = 145.0;
+    public static final double intakeAngle = 0.0;
+
+    public static final double p = 0.0;
+    public static final double i = 0.0;
+    public static final double d = 0.0;
 }
