@@ -19,7 +19,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class RobotContainer {
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
-  private final CommandXboxController m_XBoxController = new CommandXboxController(
+  private final CommandXboxController XBoxC = new CommandXboxController(
       OperatorConstants.kDriverControllerPort);
 
   FlyWheel flyWheel = new FlyWheel();
@@ -35,7 +35,7 @@ public class RobotContainer {
         new Drive(
             drivebase,
             this::getScaledXY,
-            () -> scaleRotationAxis(m_XBoxController.getRightX())));
+            () -> scaleRotationAxis(XBoxC.getRightX())));
 
     // Configure the trigger bindings
     configureBindings();
@@ -61,8 +61,8 @@ public class RobotContainer {
 
     // Assigning inputs to array locations. X and Y are switched because the
     // controller is funky.
-    xy[0] = deadband(-m_XBoxController.getLeftY(), DriveConstants.deadband);
-    xy[1] = deadband(-m_XBoxController.getLeftX(), DriveConstants.deadband);
+    xy[0] = deadband(-XBoxC.getLeftY(), DriveConstants.deadband);
+    xy[1] = deadband(-XBoxC.getLeftX(), DriveConstants.deadband);
 
     Util.square2DVector(xy);
 
@@ -92,11 +92,11 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    m_XBoxController.a().whileTrue(flyWheel.runCommand());
+    XBoxC.a().whileTrue(flyWheel.runCommand());
 
-    m_XBoxController.b().whileTrue(rollerFloor.feedCommand());
+    XBoxC.b().whileTrue(rollerFloor.feedCommand());
 
-    m_XBoxController.x().whileTrue(indexer.indexCommand());
+    XBoxC.x().whileTrue(indexer.indexCommand());
   }
 
   /**
