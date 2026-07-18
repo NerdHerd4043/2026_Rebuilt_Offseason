@@ -6,6 +6,7 @@ package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Drive;
+import frc.robot.subsystems.Intake.Intake;
 import frc.robot.subsystems.RollerFloor.RollerFloor;
 import frc.robot.subsystems.Shooter.FlyWheel;
 import frc.robot.subsystems.Shooter.Indexer;
@@ -26,6 +27,7 @@ public class RobotContainer {
   RollerFloor rollerFloor = new RollerFloor();
   Indexer indexer = new Indexer();
   Drivebase drivebase = new Drivebase();
+  Intake intake = new Intake();
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -70,7 +72,8 @@ public class RobotContainer {
   }
 
   private double scaleRotationAxis(double input) {
-    return this.deadband(this.squared(input), DriveConstants.deadband) * drivebase.getMaxAngleVelocity() * -0.6;
+    return this.deadband(this.squared(input), DriveConstants.deadband) *
+        drivebase.getMaxAngleVelocity() * -0.6;
   }
 
   private double squared(double input) {
@@ -97,6 +100,8 @@ public class RobotContainer {
     XBoxC.b().whileTrue(rollerFloor.feedCommand());
 
     XBoxC.x().whileTrue(indexer.indexCommand());
+
+    XBoxC.y().whileTrue(intake.runIntake());
   }
 
   /**

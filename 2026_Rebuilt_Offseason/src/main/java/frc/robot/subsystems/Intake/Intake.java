@@ -1,11 +1,10 @@
 package frc.robot.subsystems.Intake;
 
-import com.revrobotics.AbsoluteEncoder;
+import com.ctre.phoenix6.hardware.CANcoder;
 import com.revrobotics.PersistMode;
 import com.revrobotics.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkFlexConfig;
-import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
 import edu.wpi.first.math.controller.PIDController;
@@ -13,20 +12,19 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import com.revrobotics.spark.SparkFlex;
-import com.revrobotics.spark.SparkMax;
 
 public class Intake extends SubsystemBase {
-    private SparkMax intakingMotor = new SparkMax(IntakeConstants.intakingMotorID, MotorType.kBrushless);
+    private SparkFlex intakingMotor = new SparkFlex(IntakeConstants.intakingMotorID, MotorType.kBrushless);
     private SparkFlex articulatingMotor = new SparkFlex(IntakeConstants.articulatingMotorID, MotorType.kBrushless);
 
-    private AbsoluteEncoder absEncoder;
+    private CANcoder encoder = new CANcoder(28);
 
     private PIDController pidController = new PIDController(IntakeConstants.p, IntakeConstants.i, IntakeConstants.d);
 
     private boolean resting = true;
 
     public Intake() {
-        final SparkMaxConfig intakingMotorConfig = new SparkMaxConfig();
+        final SparkFlexConfig intakingMotorConfig = new SparkFlexConfig();
         final SparkFlexConfig articulatingMotorConfig = new SparkFlexConfig();
 
         intakingMotorConfig.idleMode(IdleMode.kBrake);
@@ -60,7 +58,8 @@ public class Intake extends SubsystemBase {
     public void periodic() {
 
         if (!resting || !pidController.atSetpoint()) {
-            articulatingMotor.setVoltage(pidController.calculate(absEncoder.getPosition() * 360));
+            articulatingMotor.setVoltage(pidController.calculate(encoder.getAbsolutePosition().getValueAsDouble()
+                    * 360));
         }
 
     }

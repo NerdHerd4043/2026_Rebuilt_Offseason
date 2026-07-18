@@ -37,6 +37,7 @@ public class DriveConstants {
 
   public static final class ModuleLocations {
     public static final double dist = Units.inchesToMeters(9.25);
+
     public static final double robotRadius = Math.sqrt(2 * Math.pow(dist, 2));
     public static final Translation2d frontLeft = new Translation2d(dist, dist);
     public static final Translation2d frontRight = new Translation2d(dist, -dist);

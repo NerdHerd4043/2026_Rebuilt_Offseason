@@ -15,7 +15,7 @@ import frc.robot.subsystems.Shooter.ShooterConstants.IndexerConstants;
 
 public class Indexer extends SubsystemBase {
     private SparkMax indexerMoter = new SparkMax(IndexerConstants.indexerMoterID, MotorType.kBrushless);
-    private SparkMax kickupMotor = new SparkMax(IndexerConstants.indexerMoterID, MotorType.kBrushless);
+    private SparkMax kickupMotor = new SparkMax(IndexerConstants.kickupMoterID, MotorType.kBrushless);
 
     public Indexer() {
         final SparkMaxConfig indexerMotorConfig = new SparkMaxConfig();
