@@ -63,6 +63,5 @@ public class Intake extends SubsystemBase {
             articulatingMotor.setVoltage(pidController.calculate(absEncoder.getPosition() * 360));
         }
 
-        super.periodic();
     }
 }

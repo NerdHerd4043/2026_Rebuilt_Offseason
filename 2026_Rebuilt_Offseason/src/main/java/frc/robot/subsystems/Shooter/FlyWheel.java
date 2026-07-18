@@ -46,17 +46,18 @@ public class FlyWheel extends SubsystemBase {
                 PersistMode.kPersistParameters);
     }
 
-    // public Command runCommand() {
-    // return this.run(() -> {
-    // rightFlyWheelMotor.set(1);
-    // }).finallyDo(() -> {
-    // rightFlyWheelMotor.stopMotor();
-    // });
-    // }
+    public Command runCommand() {
+        return this.run(() -> {
+            rightFlyWheelMotor.set(-0.3);
+        }).finallyDo(() -> {
+            rightFlyWheelMotor.stopMotor();
+        });
+    }
 
     public Command runFlyWheel() {
         return this.run(() -> {
-            pidController.setSetpoint(FlyWheelConstants.flyWheelSpeed, ControlType.kVelocity);
+            pidController.setSetpoint(FlyWheelConstants.flyWheelSpeed,
+                    ControlType.kVelocity);
         }).finallyDo(() -> {
             pidController.setSetpoint(0, ControlType.kVoltage);
         });
