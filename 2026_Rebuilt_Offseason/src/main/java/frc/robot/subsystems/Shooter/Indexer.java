@@ -15,13 +15,18 @@ import frc.robot.subsystems.Shooter.ShooterConstants.IndexerConstants;
 
 public class Indexer extends SubsystemBase {
     private SparkMax indexerMoter = new SparkMax(IndexerConstants.indexerMoterID, MotorType.kBrushless);
+    private SparkMax kickupMotor = new SparkMax(IndexerConstants.indexerMoterID, MotorType.kBrushless);
 
     public Indexer() {
         final SparkMaxConfig indexerMotorConfig = new SparkMaxConfig();
+        final SparkMaxConfig kickupMotorConfig = new SparkMaxConfig();
 
         indexerMotorConfig.idleMode(IdleMode.kBrake);
+        kickupMotorConfig.idleMode(IdleMode.kBrake);
 
         indexerMoter.configure(indexerMotorConfig, ResetMode.kResetSafeParameters,
+                PersistMode.kPersistParameters);
+        kickupMotor.configure(kickupMotorConfig, ResetMode.kResetSafeParameters,
                 PersistMode.kPersistParameters);
     }
 
@@ -30,6 +35,14 @@ public class Indexer extends SubsystemBase {
             indexerMoter.set(IndexerConstants.indexerMoterSpeed);
         }).finallyDo(() -> {
             indexerMoter.stopMotor();
+        });
+    }
+
+    public Command kickupCommand() {
+        return this.run(() -> {
+            kickupMotor.set(IndexerConstants.kickupMoterSpeed);
+        }).finallyDo(() -> {
+            kickupMotor.stopMotor();
         });
     }
 }

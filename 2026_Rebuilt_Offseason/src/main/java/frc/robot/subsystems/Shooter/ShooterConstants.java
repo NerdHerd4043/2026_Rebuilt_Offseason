@@ -18,8 +18,10 @@ public final class ShooterConstants {
 
     public static class IndexerConstants {
         public static final int indexerMoterID = 18;
+        public static final int kickupMoterID = 19;
 
         public static final Double indexerMoterSpeed = 0.2;
+        public static final Double kickupMoterSpeed = 0.2;
 
     }
 }
