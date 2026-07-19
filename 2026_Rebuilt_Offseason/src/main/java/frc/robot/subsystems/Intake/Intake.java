@@ -9,6 +9,7 @@ import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import com.revrobotics.spark.SparkFlex;
@@ -52,6 +53,20 @@ public class Intake extends SubsystemBase {
 
     public void intakeToIntakeAngle() {
         pidController.setSetpoint(IntakeConstants.intakeAngle);
+    }
+
+    public Command helpFeedBalls() {
+        Command moveIntakeUp = runOnce(() -> {
+            pidController.setSetpoint(45);
+        }).withTimeout(2);
+
+        Command moveIntakeDown = runOnce(() -> {
+            pidController.setSetpoint(0);
+        }).withTimeout(2);
+
+        Command helpFeedBallsCommand = Commands.sequence(moveIntakeUp, moveIntakeDown);
+
+        return helpFeedBallsCommand;
     }
 
     @Override
