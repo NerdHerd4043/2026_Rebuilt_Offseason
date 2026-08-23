@@ -1,6 +1,7 @@
 package frc.robot.subsystems.Shooter;
 
 import com.revrobotics.PersistMode;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.ResetMode;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkFlex;
@@ -8,6 +9,7 @@ import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkFlexConfig;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -19,7 +21,9 @@ public class FlyWheel extends SubsystemBase {
     private SparkFlex leftFlyWheelMotor = new SparkFlex(FlyWheelConstants.leftFlyWheelMotorID, MotorType.kBrushless);
     private SparkFlex rightFlyWheelMotor = new SparkFlex(FlyWheelConstants.rightFlyWheelMotorID, MotorType.kBrushless);
 
-    private SparkClosedLoopController pidController = rightFlyWheelMotor.getClosedLoopController();
+    private SparkClosedLoopController pidController;
+
+    private final RelativeEncoder encoder;
 
     public FlyWheel() {
         final SparkFlexConfig leftFlyWheelMotorConfig = new SparkFlexConfig();
@@ -44,11 +48,14 @@ public class FlyWheel extends SubsystemBase {
                 PersistMode.kPersistParameters);
         rightFlyWheelMotor.configure(rightFlyWheelMotorConfig, ResetMode.kResetSafeParameters,
                 PersistMode.kPersistParameters);
+
+        this.encoder = rightFlyWheelMotor.getEncoder();
+        this.pidController = rightFlyWheelMotor.getClosedLoopController();
     }
 
     public Command runCommand() {
         return this.run(() -> {
-            rightFlyWheelMotor.set(-0.3);
+            rightFlyWheelMotor.set(0.3);
         }).finallyDo(() -> {
             rightFlyWheelMotor.stopMotor();
         });
@@ -58,8 +65,17 @@ public class FlyWheel extends SubsystemBase {
         return this.run(() -> {
             pidController.setSetpoint(FlyWheelConstants.flyWheelSpeed,
                     ControlType.kVelocity);
-        }).finallyDo(() -> {
-            pidController.setSetpoint(0, ControlType.kVoltage);
         });
+    }
+
+    public Command stopFlyWheel() {
+        return this.run(() -> {
+            pidController.setSetpoint(0,
+                    ControlType.kVoltage);
+        });
+    }
+
+    public void periodic() {
+        SmartDashboard.putNumber("Flywheel speed (rpm)", this.encoder.getVelocity());
     }
 }

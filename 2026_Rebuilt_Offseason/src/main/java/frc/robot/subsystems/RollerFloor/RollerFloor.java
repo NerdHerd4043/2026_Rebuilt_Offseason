@@ -16,7 +16,8 @@ public class RollerFloor extends SubsystemBase {
     public RollerFloor() {
         final SparkMaxConfig rollerFloorMotorConfig = new SparkMaxConfig();
 
-        rollerFloorMotorConfig.idleMode(IdleMode.kBrake);
+        rollerFloorMotorConfig.idleMode(IdleMode.kCoast);
+        rollerFloorMotorConfig.inverted(true);
 
         rollerFloorMotor.configure(rollerFloorMotorConfig, ResetMode.kResetSafeParameters,
                 PersistMode.kPersistParameters);

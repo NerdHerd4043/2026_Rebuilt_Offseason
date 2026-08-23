@@ -9,7 +9,10 @@ public class IntakeConstants {
     public static final double startingAngle = 145.0;
     public static final double intakeAngle = 0.0;
 
-    public static final double p = 0.0;
-    public static final double i = 0.0;
-    public static final double d = 0.0;
+    public static final Double P = 0.0;
+    public static final Double I = 0.0;
+    public static final Double D = 0.0;
+
+    public static final Double kS = 0.0;
+    public static final Double kV = 0.0;
 }

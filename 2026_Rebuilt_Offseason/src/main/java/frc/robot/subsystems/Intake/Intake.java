@@ -7,7 +7,8 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkFlexConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
-import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -20,7 +21,8 @@ public class Intake extends SubsystemBase {
 
     private CANcoder encoder = new CANcoder(28);
 
-    private PIDController pidController = new PIDController(IntakeConstants.p, IntakeConstants.i, IntakeConstants.d);
+    private ProfiledPIDController pidController = new ProfiledPIDController(IntakeConstants.P, IntakeConstants.I,
+            IntakeConstants.D, new TrapezoidProfile.Constraints(2, 5));
 
     private boolean resting = true;
 
@@ -48,20 +50,24 @@ public class Intake extends SubsystemBase {
     }
 
     public void intakeToStartAngle() {
-        pidController.setSetpoint(IntakeConstants.startingAngle);
+        resting = true;
+        pidController.setGoal(IntakeConstants.startingAngle);
     }
 
     public void intakeToIntakeAngle() {
-        pidController.setSetpoint(IntakeConstants.intakeAngle);
+        resting = false;
+        pidController.setGoal(IntakeConstants.intakeAngle);
     }
 
     public Command helpFeedBalls() {
+        resting = false;
+
         Command moveIntakeUp = runOnce(() -> {
-            pidController.setSetpoint(45);
+            pidController.setGoal(45);
         }).withTimeout(2);
 
         Command moveIntakeDown = runOnce(() -> {
-            pidController.setSetpoint(0);
+            pidController.setGoal(0);
         }).withTimeout(2);
 
         Command helpFeedBallsCommand = Commands.sequence(moveIntakeUp, moveIntakeDown);

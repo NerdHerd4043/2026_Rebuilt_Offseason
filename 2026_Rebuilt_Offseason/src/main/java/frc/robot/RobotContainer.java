@@ -95,13 +95,18 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    XBoxC.a().whileTrue(flyWheel.runCommand());
+    XBoxC.rightBumper().onTrue(flyWheel.runFlyWheel());
+    XBoxC.rightBumper().onFalse(flyWheel.stopFlyWheel());
 
     XBoxC.b().whileTrue(rollerFloor.feedCommand());
 
-    XBoxC.x().whileTrue(indexer.indexCommand());
+    XBoxC.a().whileTrue(indexer.indexCommand());
+    XBoxC.x().whileTrue(indexer.kickupCommand());
 
-    XBoxC.y().whileTrue(intake.runIntake());
+    // XBoxC.x().onTrue(runOnintake.intakeToIntakeAngle());
+    // XBoxC.y().onTrue(intake.intakeToStartAngle());
+
+    XBoxC.leftBumper().whileTrue(intake.runIntake());
   }
 
   /**
