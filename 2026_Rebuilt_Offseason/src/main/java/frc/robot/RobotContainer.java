@@ -7,6 +7,7 @@ package frc.robot;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Drive;
 import frc.robot.subsystems.Intake.Intake;
+import frc.robot.subsystems.Intake.IntakeTest;
 import frc.robot.subsystems.RollerFloor.RollerFloor;
 import frc.robot.subsystems.Shooter.FlyWheel;
 import frc.robot.subsystems.Shooter.Indexer;
@@ -14,6 +15,7 @@ import frc.robot.subsystems.drivebase.DriveConstants;
 import frc.robot.subsystems.drivebase.Drivebase;
 import cowlib.Util;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -28,6 +30,7 @@ public class RobotContainer {
   Indexer indexer = new Indexer();
   Drivebase drivebase = new Drivebase();
   Intake intake = new Intake();
+  IntakeTest intakeTest = new IntakeTest();
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -101,12 +104,12 @@ public class RobotContainer {
     XBoxC.b().whileTrue(rollerFloor.feedCommand());
 
     XBoxC.a().whileTrue(indexer.indexCommand());
-    XBoxC.x().whileTrue(indexer.kickupCommand());
+    XBoxC.a().whileTrue(indexer.kickupCommand());
 
-    // XBoxC.x().onTrue(runOnintake.intakeToIntakeAngle());
-    // XBoxC.y().onTrue(intake.intakeToStartAngle());
+    XBoxC.x().onTrue(intake.intakeToIntakeAngle());
+    XBoxC.y().onTrue(intake.intakeToStartAngle());
 
-    XBoxC.leftBumper().whileTrue(intake.runIntake());
+    XBoxC.leftBumper().whileTrue(intakeTest.runIntake());
   }
 
   /**

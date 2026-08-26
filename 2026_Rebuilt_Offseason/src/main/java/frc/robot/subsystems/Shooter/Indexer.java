@@ -21,8 +21,8 @@ public class Indexer extends SubsystemBase {
         final SparkMaxConfig indexerMotorConfig = new SparkMaxConfig();
         final SparkMaxConfig kickupMotorConfig = new SparkMaxConfig();
 
-        indexerMotorConfig.idleMode(IdleMode.kBrake);
-        kickupMotorConfig.idleMode(IdleMode.kBrake);
+        indexerMotorConfig.idleMode(IdleMode.kCoast);
+        kickupMotorConfig.idleMode(IdleMode.kCoast);
 
         kickupMotorConfig.inverted(true);
 
