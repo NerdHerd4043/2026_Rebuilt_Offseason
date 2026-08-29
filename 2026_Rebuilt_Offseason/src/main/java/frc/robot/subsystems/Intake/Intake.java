@@ -90,12 +90,12 @@ public class Intake extends SubsystemBase {
     @Override
     public void periodic() {
 
-        if (!resting && !pidController.atSetpoint()) {
-            articulatingMotor
-                    .setVoltage((-pidController.calculate(encoder.getAbsolutePosition().getValueAsDouble() * 360))
-                            + (-feedforward.calculate(pidController.getSetpoint().position,
-                                    pidController.getSetpoint().velocity)));
-        }
+        // if (!resting && !pidController.atSetpoint()) {
+        //     articulatingMotor
+        //             .setVoltage((-pidController.calculate(encoder.getAbsolutePosition().getValueAsDouble() * 360))
+        //                     + (-feedforward.calculate(pidController.getSetpoint().position,
+        //                             pidController.getSetpoint().velocity)));
+        // }
 
     }
 }
