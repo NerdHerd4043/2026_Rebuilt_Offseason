@@ -103,8 +103,7 @@ public class RobotContainer {
 
     XBoxC.b().whileTrue(rollerFloor.feedCommand());
 
-    XBoxC.a().whileTrue(indexer.indexCommand());
-    XBoxC.a().whileTrue(indexer.kickupCommand());
+    XBoxC.a().whileTrue(indexer.indexAndKickupCommand());
 
     XBoxC.x().onTrue(intake.intakeToIntakeAngle());
     XBoxC.y().onTrue(intake.intakeToStartAngle());

@@ -47,4 +47,14 @@ public class Indexer extends SubsystemBase {
             kickupMotor.stopMotor();
         });
     }
+
+    public Command indexAndKickupCommand() {
+        return this.run(() -> {
+            kickupMotor.set(IndexerConstants.kickupMoterSpeed);
+            indexerMoter.set(IndexerConstants.indexerMoterSpeed);
+        }).finallyDo(() -> {
+            kickupMotor.stopMotor();
+            indexerMoter.stopMotor();
+        });
+    }
 }
