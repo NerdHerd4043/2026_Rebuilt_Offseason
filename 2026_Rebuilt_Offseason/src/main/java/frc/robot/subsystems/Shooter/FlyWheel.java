@@ -77,5 +77,6 @@ public class FlyWheel extends SubsystemBase {
 
     public void periodic() {
         SmartDashboard.putNumber("Flywheel speed (rpm)", this.encoder.getVelocity());
+        SmartDashboard.putNumber("Flywheel Target", FlyWheelConstants.flyWheelSpeed);
     }
 }
