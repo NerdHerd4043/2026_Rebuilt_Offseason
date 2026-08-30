@@ -6,6 +6,8 @@ public class IntakeConstants {
 
     public static final double intakeSpeed = 0.6;
 
+    public static final int articulatingMotorCurrent = 20;
+
     public static final double startingAngle = 144.0;
     public static final double intakeAngle = 10.0;
 

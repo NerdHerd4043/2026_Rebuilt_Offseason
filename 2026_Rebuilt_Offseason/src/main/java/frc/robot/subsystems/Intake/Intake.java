@@ -40,6 +40,7 @@ public class Intake extends SubsystemBase {
 
         // intakingMotorConfig.idleMode(IdleMode.kBrake);
         articulatingMotorConfig.idleMode(IdleMode.kBrake);
+        articulatingMotorConfig.smartCurrentLimit(IntakeConstants.articulatingMotorCurrent);
 
         // intakingMotor.configure(intakingMotorConfig, ResetMode.kResetSafeParameters,
         // PersistMode.kPersistParameters);
