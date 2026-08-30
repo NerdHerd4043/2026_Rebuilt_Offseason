@@ -4,7 +4,7 @@ public class IntakeConstants {
     public static final int intakingMotorID = 26;
     public static final int articulatingMotorID = 27;
 
-    public static final double intakeSpeed = 0.6;
+    public static final double intakeSpeed = 1.0;
 
     public static final int articulatingMotorCurrent = 20;
 
