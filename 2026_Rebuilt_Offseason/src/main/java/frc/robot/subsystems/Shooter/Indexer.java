@@ -25,6 +25,7 @@ public class Indexer extends SubsystemBase {
         kickupMotorConfig.idleMode(IdleMode.kCoast);
 
         kickupMotorConfig.inverted(true);
+        indexerMotorConfig.inverted(true);
 
         indexerMoter.configure(indexerMotorConfig, ResetMode.kResetSafeParameters,
                 PersistMode.kPersistParameters);

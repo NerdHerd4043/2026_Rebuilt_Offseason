@@ -12,6 +12,7 @@ import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -38,9 +39,8 @@ public class Intake extends SubsystemBase {
         final SparkMaxConfig articulatingMotorConfig = new SparkMaxConfig();
 
         intakingMotorConfig.idleMode(IdleMode.kBrake);
-        intakingMotorConfig.smartCurrentLimit(30);
 
-        articulatingMotorConfig.idleMode(IdleMode.kBrake);
+        articulatingMotorConfig.idleMode(IdleMode.kCoast);
         articulatingMotorConfig.smartCurrentLimit(IntakeConstants.articulatingMotorCurrent);
 
         intakingMotor.configure(intakingMotorConfig, ResetMode.kResetSafeParameters,
@@ -89,15 +89,33 @@ public class Intake extends SubsystemBase {
         return helpFeedBallsCommand;
     }
 
+    public Command intakeUp() {
+        return this.run(() -> {
+            articulatingMotor.set(0.2);
+        }).finallyDo(() -> {
+            articulatingMotor.stopMotor();
+        });
+    }
+
     @Override
     public void periodic() {
 
+        // if (!resting && !pidController.atSetpoint()) {
+        // articulatingMotor
+        // .setVoltage(
+        // (-pidController.calculate(encoder.getAbsolutePosition().getValueAsDouble() *
+        // 2 * Math.PI))
+        // + (-feedforward.calculate(pidController.getSetpoint().position,
+        // pidController.getSetpoint().velocity)));
+        // }
+
         if (!resting && !pidController.atSetpoint()) {
-            articulatingMotor
-                    .setVoltage((-pidController.calculate(encoder.getAbsolutePosition().getValueAsDouble() * 360))
-                            + (-feedforward.calculate(pidController.getSetpoint().position,
-                                    pidController.getSetpoint().velocity)));
+            articulatingMotor.setVoltage(pidController.calculate(encoder.getAbsolutePosition().getValueAsDouble())
+                    + feedforward.calculate(pidController.getSetpoint().position,
+                            pidController.getSetpoint().velocity));
         }
+
+        SmartDashboard.putNumber("Intake Voltage", articulatingMotor.getBusVoltage());
 
     }
 }

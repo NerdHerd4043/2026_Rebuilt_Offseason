@@ -193,6 +193,12 @@ public class Drivebase extends SubsystemBase {
     odometry.resetPosition(gyro.getRotation2d(), getPositions(), pose2d);
   }
 
+  public Command resetGyro() {
+    return this.runOnce(() -> {
+      gyro.reset();
+    });
+  }
+
   public ChassisSpeeds getCurrentSpeeds() {
     return kinematics.toChassisSpeeds(getModuleStates());
   }

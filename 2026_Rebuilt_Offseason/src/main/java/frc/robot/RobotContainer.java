@@ -106,6 +106,10 @@ public class RobotContainer {
     XBoxC.x().onTrue(intake.intakeToIntakeAngle());
     XBoxC.y().onTrue(intake.intakeToStartAngle());
 
+    XBoxC.leftStick().onTrue(drivebase.resetGyro());
+
+    XBoxC.povUp().whileTrue(intake.intakeUp());
+
     XBoxC.leftBumper().whileTrue(intake.runIntake());
   }
 

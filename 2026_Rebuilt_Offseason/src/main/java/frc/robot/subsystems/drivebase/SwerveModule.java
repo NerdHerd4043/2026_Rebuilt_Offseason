@@ -75,7 +75,7 @@ public class SwerveModule {
   }
 
   private void drive(double speedMetersPerSecond, double angle) {
-    double voltage = (speedMetersPerSecond / maxVelocity) * maxVoltage;
+    double voltage = (speedMetersPerSecond / maxVelocity) * maxVoltage * 2;
     speedMotor.setVoltage(voltage);
     angleMotor.setVoltage(-pidController.calculate(this.getEncoder(), angle));
   }

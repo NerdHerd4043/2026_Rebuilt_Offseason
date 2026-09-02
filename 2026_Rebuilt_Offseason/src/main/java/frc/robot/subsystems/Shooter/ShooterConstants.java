@@ -19,7 +19,7 @@ public final class ShooterConstants {
         public static final int indexerMoterID = 18;
         public static final int kickupMoterID = 19;
 
-        public static final Double indexerMoterSpeed = -0.75;
-        public static final Double kickupMoterSpeed = 0.5;
+        public static final Double indexerMoterSpeed = 0.85;
+        public static final Double kickupMoterSpeed = 0.85;
     }
 }
