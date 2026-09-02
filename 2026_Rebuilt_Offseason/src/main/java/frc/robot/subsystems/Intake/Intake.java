@@ -19,8 +19,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.revrobotics.spark.SparkFlex;
 
 public class Intake extends SubsystemBase {
-    // private SparkFlex intakingMotor = new
-    // SparkFlex(IntakeConstants.intakingMotorID, MotorType.kBrushless);
+    private SparkFlex intakingMotor = new SparkFlex(IntakeConstants.intakingMotorID, MotorType.kBrushless);
     private SparkMax articulatingMotor = new SparkMax(IntakeConstants.articulatingMotorID, MotorType.kBrushless);
 
     private CANcoder encoder = new CANcoder(28);
@@ -35,28 +34,30 @@ public class Intake extends SubsystemBase {
     private boolean resting = true;
 
     public Intake() {
-        // final SparkFlexConfig intakingMotorConfig = new SparkFlexConfig();
+        final SparkFlexConfig intakingMotorConfig = new SparkFlexConfig();
         final SparkMaxConfig articulatingMotorConfig = new SparkMaxConfig();
 
-        // intakingMotorConfig.idleMode(IdleMode.kBrake);
+        intakingMotorConfig.idleMode(IdleMode.kBrake);
+        intakingMotorConfig.smartCurrentLimit(30);
+
         articulatingMotorConfig.idleMode(IdleMode.kBrake);
         articulatingMotorConfig.smartCurrentLimit(IntakeConstants.articulatingMotorCurrent);
 
-        // intakingMotor.configure(intakingMotorConfig, ResetMode.kResetSafeParameters,
-        // PersistMode.kPersistParameters);
+        intakingMotor.configure(intakingMotorConfig, ResetMode.kResetSafeParameters,
+                PersistMode.kPersistParameters);
         articulatingMotor.configure(articulatingMotorConfig, ResetMode.kResetSafeParameters,
                 PersistMode.kPersistParameters);
 
         pidController.disableContinuousInput();
     }
 
-    // public Command runIntake() {
-    // return this.run(() -> {
-    // intakingMotor.set(IntakeConstants.intakeSpeed);
-    // }).finallyDo(() -> {
-    // intakingMotor.stopMotor();
-    // });
-    // }
+    public Command runIntake() {
+        return this.run(() -> {
+            intakingMotor.set(IntakeConstants.intakeSpeed);
+        }).finallyDo(() -> {
+            intakingMotor.stopMotor();
+        });
+    }
 
     public Command intakeToStartAngle() {
         return this.runOnce(() -> {
@@ -91,12 +92,12 @@ public class Intake extends SubsystemBase {
     @Override
     public void periodic() {
 
-        // if (!resting && !pidController.atSetpoint()) {
-        //     articulatingMotor
-        //             .setVoltage((-pidController.calculate(encoder.getAbsolutePosition().getValueAsDouble() * 360))
-        //                     + (-feedforward.calculate(pidController.getSetpoint().position,
-        //                             pidController.getSetpoint().velocity)));
-        // }
+        if (!resting && !pidController.atSetpoint()) {
+            articulatingMotor
+                    .setVoltage((-pidController.calculate(encoder.getAbsolutePosition().getValueAsDouble() * 360))
+                            + (-feedforward.calculate(pidController.getSetpoint().position,
+                                    pidController.getSetpoint().velocity)));
+        }
 
     }
 }

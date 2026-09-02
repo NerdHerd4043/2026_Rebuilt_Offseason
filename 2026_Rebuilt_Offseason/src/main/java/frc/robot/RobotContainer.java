@@ -7,7 +7,6 @@ package frc.robot;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Drive;
 import frc.robot.subsystems.Intake.Intake;
-import frc.robot.subsystems.Intake.IntakeTest;
 import frc.robot.subsystems.RollerFloor.RollerFloor;
 import frc.robot.subsystems.Shooter.FlyWheel;
 import frc.robot.subsystems.Shooter.Indexer;
@@ -30,7 +29,6 @@ public class RobotContainer {
   Indexer indexer = new Indexer();
   Drivebase drivebase = new Drivebase();
   Intake intake = new Intake();
-  IntakeTest intakeTest = new IntakeTest();
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -108,7 +106,7 @@ public class RobotContainer {
     XBoxC.x().onTrue(intake.intakeToIntakeAngle());
     XBoxC.y().onTrue(intake.intakeToStartAngle());
 
-    XBoxC.leftBumper().whileTrue(intakeTest.runIntake());
+    XBoxC.leftBumper().whileTrue(intake.runIntake());
   }
 
   /**
