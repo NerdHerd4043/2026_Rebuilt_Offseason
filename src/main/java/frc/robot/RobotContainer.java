@@ -13,10 +13,13 @@ import frc.robot.subsystems.Shooter.Indexer;
 import frc.robot.subsystems.drivebase.DriveConstants;
 import frc.robot.subsystems.drivebase.Drivebase;
 import cowlib.Util;
+import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
+@Logged
 public class RobotContainer {
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
@@ -38,6 +41,8 @@ public class RobotContainer {
             drivebase,
             this::getScaledXY,
             () -> scaleRotationAxis(XBoxC.getRightX())));
+
+    CommandScheduler.getInstance().schedule(flyWheel.stopFlyWheel());
 
     // Configure the trigger bindings
     configureBindings();

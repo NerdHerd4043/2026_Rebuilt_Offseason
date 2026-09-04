@@ -9,6 +9,7 @@ import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkFlexConfig;
 
+import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -17,6 +18,7 @@ import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
 import frc.robot.subsystems.Shooter.ShooterConstants.FlyWheelConstants;
 
+@Logged
 public class FlyWheel extends SubsystemBase {
     private SparkFlex leftFlyWheelMotor = new SparkFlex(FlyWheelConstants.leftFlyWheelMotorID, MotorType.kBrushless);
     private SparkFlex rightFlyWheelMotor = new SparkFlex(FlyWheelConstants.rightFlyWheelMotorID, MotorType.kBrushless);
@@ -77,6 +79,10 @@ public class FlyWheel extends SubsystemBase {
 
     public void periodic() {
         SmartDashboard.putNumber("Flywheel speed (rpm)", this.encoder.getVelocity());
+
+        SmartDashboard.putNumber("Flywheel duty cycle", this.rightFlyWheelMotor.getAppliedOutput());
+        SmartDashboard.putNumber("Flywheel current", this.rightFlyWheelMotor.getOutputCurrent());
+        SmartDashboard.putNumber("Flywheel Setpoint", this.pidController.getSetpoint());
         SmartDashboard.putNumber("Flywheel Target", FlyWheelConstants.flyWheelSpeed);
     }
 }

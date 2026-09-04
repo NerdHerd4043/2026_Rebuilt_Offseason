@@ -5,12 +5,13 @@ public final class ShooterConstants {
         public static final int leftFlyWheelMotorID = 16;
         public static final int rightFlyWheelMotorID = 17;
 
-        public static final Double P = 0.0002;
+        // public static final Double P = 0.0;
+        public static final Double P = 0.0015;
         public static final Double I = 0.0;
         public static final Double D = 0.0;
 
         public static final Double kS = 0.0;
-        public static final Double kV = 0.0021;
+        public static final Double kV = 0.0025;
 
         public static final double flyWheelSpeed = 1500;
     }

@@ -1,5 +1,8 @@
 package frc.robot.subsystems.Intake;
 
+import edu.wpi.first.epilogue.Logged;
+
+@Logged
 public class IntakeConstants {
     public static final int intakingMotorID = 26;
     public static final int articulatingMotorID = 27;
@@ -8,8 +11,8 @@ public class IntakeConstants {
 
     public static final int articulatingMotorCurrent = 20;
 
-    public static final double startingAngle = 144.0;
-    public static final double intakeAngle = 10.0;
+    public static final double startingAngle = 0.4;
+    public static final double intakeAngle = 0.0;
 
     public static final Double P = 0.0;
     public static final Double I = 0.0;
