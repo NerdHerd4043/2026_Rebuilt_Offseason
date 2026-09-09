@@ -124,4 +124,8 @@ public class Intake extends SubsystemBase {
         SmartDashboard.putNumber("Encoder ABS Pos", encoder.getAbsolutePosition().getValueAsDouble());
         SmartDashboard.putNumber("PID Set Point", pidController.getSetpoint().position);
     }
+
+    public void disabledInit() {
+        resting = true;
+    }
 }

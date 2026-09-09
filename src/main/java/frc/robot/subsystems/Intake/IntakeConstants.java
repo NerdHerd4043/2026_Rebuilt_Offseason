@@ -19,6 +19,6 @@ public class IntakeConstants {
     public static final Double D = 0.0;
 
     public static final Double kS = 0.0;
-    public static final Double kG = 4.0;
+    public static final Double kG = 1.0;
     public static final Double kV = 0.0;
 }

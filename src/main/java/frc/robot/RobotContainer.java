@@ -30,7 +30,7 @@ public class RobotContainer {
   RollerFloor rollerFloor = new RollerFloor();
   Indexer indexer = new Indexer();
   Drivebase drivebase = new Drivebase();
-  Intake intake = new Intake();
+  static Intake intake = new Intake();
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -124,5 +124,9 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     return null;
+  }
+
+  public static void disabledInit() {
+    intake.disabledInit();
   }
 }
