@@ -1,5 +1,7 @@
 package frc.robot.subsystems.Intake;
 
+import java.util.function.DoubleSupplier;
+
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.revrobotics.PersistMode;
 import com.revrobotics.ResetMode;
@@ -25,14 +27,17 @@ public class Intake extends SubsystemBase {
     private SparkFlex intakingMotor = new SparkFlex(IntakeConstants.intakingMotorID, MotorType.kBrushless);
     private SparkMax articulatingMotor = new SparkMax(IntakeConstants.articulatingMotorID, MotorType.kBrushless);
 
-    private CANcoder encoder = new CANcoder(28);
+    private CANcoder encoder = new CANcoder(IntakeConstants.encoderID);
     private ArmFeedforward feedforward = new ArmFeedforward(
             IntakeConstants.kS,
             IntakeConstants.kG,
             IntakeConstants.kV);
 
-    private ProfiledPIDController pidController = new ProfiledPIDController(IntakeConstants.P, IntakeConstants.I,
+    public ProfiledPIDController pidController = new ProfiledPIDController(IntakeConstants.P, IntakeConstants.I,
             IntakeConstants.D, new TrapezoidProfile.Constraints(2, 3));
+    // private ProfiledPIDController pidController = new
+    // ProfiledPIDController(IntakeConstants.P, IntakeConstants.I,
+    // IntakeConstants.D, new TrapezoidProfile.Constraints(2, 3));
 
     private boolean resting = true;
 
@@ -42,6 +47,7 @@ public class Intake extends SubsystemBase {
 
         intakingMotorConfig.idleMode(IdleMode.kBrake);
 
+        articulatingMotorConfig.inverted(false);
         articulatingMotorConfig.idleMode(IdleMode.kCoast);
         articulatingMotorConfig.smartCurrentLimit(IntakeConstants.articulatingMotorCurrent);
 
@@ -51,6 +57,8 @@ public class Intake extends SubsystemBase {
                 PersistMode.kPersistParameters);
 
         pidController.disableContinuousInput();
+
+        SmartDashboard.putData(this.pidController);
     }
 
     public Command runIntake() {
@@ -98,18 +106,60 @@ public class Intake extends SubsystemBase {
         });
     }
 
+    public Command testSetPoint() {
+        return this.runOnce(() -> {
+            resting = false;
+            // pidController.setGoal(IntakeConstants.testSetPoint);
+        });
+    }
+
+    public Command adjustSetPoint(DoubleSupplier supplier) {
+        return this.run(() -> {
+            var angleAdjust = supplier.getAsDouble() * 0.01;
+            pidController.setGoal(pidController.getGoal().position +
+                    angleAdjust);
+        });
+    }
+    // public Command increaseSetPoint() {
+    // return this.runOnce(() -> {
+    // double newSetPoint = pidController.getGoal().position + 0.1;
+
+    // if (newSetPoint < IntakeConstants.startingAngle) {
+    // pidController.setGoal(newSetPoint);
+    // }
+    // });
+    // }
+
+    // public Command decreaseSetPoint() {
+    // return this.runOnce(() -> {
+    // double newSetPoint = pidController.getGoal().position - 0.1;
+
+    // if (newSetPoint > 0) {
+    // pidController.setGoal(newSetPoint);
+    // }
+    // });
+    // }
+
+    public double getEncoderInRadians() {
+        return encoder.getAbsolutePosition().getValueAsDouble() * (2 * Math.PI);
+    }
+
     @Override
     public void periodic() {
-
-        if (!resting && !pidController.atSetpoint()) {
-            double encoderPos = encoder.getAbsolutePosition().getValueAsDouble();
-            double PIDOutput = -pidController.calculate(encoderPos);
+        if (!resting) {
+            double PIDOutput = pidController.calculate(getEncoderInRadians());
 
             double PIDSetPointVelocity = pidController.getSetpoint().velocity;
             double PIDSetPointPos = pidController.getSetpoint().position;
-            double FFOutput = -feedforward.calculate(PIDSetPointPos, PIDSetPointVelocity);
+            double FFOutput = feedforward.calculate(PIDSetPointPos, PIDSetPointVelocity);
+
+            SmartDashboard.putNumber("Intake PID output", PIDOutput);
+            SmartDashboard.putNumber("Intake FF output", FFOutput);
 
             double Voltage = PIDOutput + FFOutput;
+
+            SmartDashboard.putNumber("Intake given voltage", Voltage);
+            SmartDashboard.putNumber("Intake output current", articulatingMotor.getOutputCurrent());
 
             articulatingMotor.setVoltage(Voltage);
         }
@@ -121,8 +171,11 @@ public class Intake extends SubsystemBase {
         // }
 
         SmartDashboard.putNumber("Intake Duty Cycle In %", articulatingMotor.getAppliedOutput());
-        SmartDashboard.putNumber("Encoder ABS Pos", encoder.getAbsolutePosition().getValueAsDouble());
+        SmartDashboard.putNumber("Encoder ABS Pos", getEncoderInRadians());
         SmartDashboard.putNumber("PID Set Point", pidController.getSetpoint().position);
+        SmartDashboard.putNumber("PID Goal", pidController.getGoal().position);
+        SmartDashboard.putBoolean("PID at setpoints", pidController.atSetpoint());
+
     }
 
     public void disabledInit() {

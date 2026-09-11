@@ -30,7 +30,7 @@ public class RobotContainer {
   RollerFloor rollerFloor = new RollerFloor();
   Indexer indexer = new Indexer();
   Drivebase drivebase = new Drivebase();
-  static Intake intake = new Intake();
+  Intake intake = new Intake();
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -41,6 +41,8 @@ public class RobotContainer {
             drivebase,
             this::getScaledXY,
             () -> scaleRotationAxis(XBoxC.getRightX())));
+
+    intake.setDefaultCommand(intake.adjustSetPoint(() -> XBoxC.getLeftTriggerAxis() - XBoxC.getRightTriggerAxis()));
 
     CommandScheduler.getInstance().schedule(flyWheel.stopFlyWheel());
 
@@ -110,6 +112,11 @@ public class RobotContainer {
     XBoxC.x().onTrue(intake.intakeToIntakeAngle());
     XBoxC.y().onTrue(intake.intakeToStartAngle());
 
+    XBoxC.povDown().onTrue(intake.testSetPoint());
+
+    // XBoxC.leftTrigger().onTrue(intake.increaseSetPoint());
+    // XBoxC.rightTrigger().onTrue(intake.decreaseSetPoint());
+
     XBoxC.leftStick().onTrue(drivebase.resetGyro());
 
     XBoxC.povUp().whileTrue(intake.intakeUp());
@@ -126,7 +133,7 @@ public class RobotContainer {
     return null;
   }
 
-  public static void disabledInit() {
+  public void disabledInit() {
     intake.disabledInit();
   }
 }
