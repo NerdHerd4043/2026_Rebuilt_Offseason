@@ -114,9 +114,6 @@ public class RobotContainer {
 
     XBoxC.povDown().onTrue(intake.testSetPoint());
 
-    // XBoxC.leftTrigger().onTrue(intake.increaseSetPoint());
-    // XBoxC.rightTrigger().onTrue(intake.decreaseSetPoint());
-
     XBoxC.leftStick().onTrue(drivebase.resetGyro());
 
     XBoxC.povUp().whileTrue(intake.intakeUp());

@@ -35,9 +35,6 @@ public class Intake extends SubsystemBase {
 
     public ProfiledPIDController pidController = new ProfiledPIDController(IntakeConstants.P, IntakeConstants.I,
             IntakeConstants.D, new TrapezoidProfile.Constraints(2, 3));
-    // private ProfiledPIDController pidController = new
-    // ProfiledPIDController(IntakeConstants.P, IntakeConstants.I,
-    // IntakeConstants.D, new TrapezoidProfile.Constraints(2, 3));
 
     private boolean resting = true;
 
@@ -120,25 +117,6 @@ public class Intake extends SubsystemBase {
                     angleAdjust);
         });
     }
-    // public Command increaseSetPoint() {
-    // return this.runOnce(() -> {
-    // double newSetPoint = pidController.getGoal().position + 0.1;
-
-    // if (newSetPoint < IntakeConstants.startingAngle) {
-    // pidController.setGoal(newSetPoint);
-    // }
-    // });
-    // }
-
-    // public Command decreaseSetPoint() {
-    // return this.runOnce(() -> {
-    // double newSetPoint = pidController.getGoal().position - 0.1;
-
-    // if (newSetPoint > 0) {
-    // pidController.setGoal(newSetPoint);
-    // }
-    // });
-    // }
 
     public double getEncoderInRadians() {
         return encoder.getAbsolutePosition().getValueAsDouble() * (2 * Math.PI);
@@ -163,12 +141,6 @@ public class Intake extends SubsystemBase {
 
             articulatingMotor.setVoltage(Voltage);
         }
-
-        // if (!resting && !pidController.atSetpoint()) {
-        // articulatingMotor.setVoltage(pidController.calculate(encoder.getAbsolutePosition().getValueAsDouble())
-        // + feedforward.calculate(pidController.getSetpoint().position,
-        // pidController.getSetpoint().velocity));
-        // }
 
         SmartDashboard.putNumber("Intake Duty Cycle In %", articulatingMotor.getAppliedOutput());
         SmartDashboard.putNumber("Encoder ABS Pos", getEncoderInRadians());
