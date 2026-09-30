@@ -17,12 +17,12 @@ public class IntakeConstants {
 
     public static final double testSetPoint = 1.05;
 
-    public static final Double P = 8.0;
+    public static final Double P = 3.5;
 
     public static final Double I = 0.0;
     public static final Double D = 0.0;
 
     public static final Double kS = 0.0;
     public static final Double kG = 0.5;
-    public static final Double kV = 0.0;
+    public static final Double kV = 0.03;
 }

@@ -97,16 +97,20 @@ public class Intake extends SubsystemBase {
 
     public Command intakeUp() {
         return this.run(() -> {
-            articulatingMotor.set(0.2);
-        }).finallyDo(() -> {
-            articulatingMotor.stopMotor();
+            pidController.setGoal(IntakeConstants.startingAngle);
+        });
+    }
+
+    public Command intakeDown() {
+        return this.run(() -> {
+            pidController.setGoal(IntakeConstants.intakeAngle);
         });
     }
 
     public Command testSetPoint() {
         return this.runOnce(() -> {
             resting = false;
-            // pidController.setGoal(IntakeConstants.testSetPoint);
+            pidController.setGoal(getEncoderInRadians());
         });
     }
 

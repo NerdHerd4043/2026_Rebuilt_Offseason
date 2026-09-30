@@ -116,7 +116,9 @@ public class RobotContainer {
 
     XBoxC.leftStick().onTrue(drivebase.resetGyro());
 
-    XBoxC.povUp().whileTrue(intake.intakeUp());
+    XBoxC.povLeft().whileTrue(intake.intakeUp());
+
+    XBoxC.povRight().whileTrue(intake.intakeDown());
 
     XBoxC.leftBumper().whileTrue(intake.runIntake());
   }
