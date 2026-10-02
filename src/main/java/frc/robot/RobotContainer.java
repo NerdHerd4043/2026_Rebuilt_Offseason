@@ -16,6 +16,7 @@ import cowlib.Util;
 import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -23,7 +24,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class RobotContainer {
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
-  private final CommandXboxController XBoxC = new CommandXboxController(
+  private final CommandXboxController controller = new CommandXboxController(
       OperatorConstants.kDriverControllerPort);
 
   FlyWheel flyWheel = new FlyWheel();
@@ -40,9 +41,10 @@ public class RobotContainer {
         new Drive(
             drivebase,
             this::getScaledXY,
-            () -> scaleRotationAxis(XBoxC.getRightX())));
+            () -> scaleRotationAxis(controller.getRightX())));
 
-    intake.setDefaultCommand(intake.adjustSetPoint(() -> XBoxC.getLeftTriggerAxis() - XBoxC.getRightTriggerAxis()));
+    intake.setDefaultCommand(
+        intake.adjustSetPoint(() -> controller.getLeftTriggerAxis() - controller.getRightTriggerAxis()));
 
     CommandScheduler.getInstance().schedule(flyWheel.stopFlyWheel());
 
@@ -70,8 +72,8 @@ public class RobotContainer {
 
     // Assigning inputs to array locations. X and Y are switched because the
     // controller is funky.
-    xy[0] = deadband(-XBoxC.getLeftY(), DriveConstants.deadband);
-    xy[1] = deadband(-XBoxC.getLeftX(), DriveConstants.deadband);
+    xy[0] = deadband(-controller.getLeftY(), DriveConstants.deadband);
+    xy[1] = deadband(-controller.getLeftX(), DriveConstants.deadband);
 
     Util.square2DVector(xy);
 
@@ -102,25 +104,22 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    XBoxC.rightBumper().onTrue(flyWheel.runFlyWheel());
-    XBoxC.rightBumper().onFalse(flyWheel.stopFlyWheel());
+    controller.rightBumper().onTrue(flyWheel.runFlyWheel());
+    controller.rightBumper().onFalse(flyWheel.stopFlyWheel());
 
-    XBoxC.b().whileTrue(rollerFloor.feedCommand());
+    controller.b().whileTrue(rollerFloor.feedCommand());
+    controller.a().whileTrue(Commands.parallel(indexer.indexAndKickupCommand(), rollerFloor.feedCommand()));
 
-    XBoxC.a().whileTrue(indexer.indexAndKickupCommand());
+    controller.x().whileTrue(intake.helpFeedBalls());
 
-    XBoxC.x().onTrue(intake.intakeToIntakeAngle());
-    XBoxC.y().onTrue(intake.intakeToStartAngle());
+    controller.povDown().onTrue(intake.actavtivePID());
 
-    XBoxC.povDown().onTrue(intake.testSetPoint());
+    controller.povUp().onTrue(drivebase.resetGyro());
 
-    XBoxC.leftStick().onTrue(drivebase.resetGyro());
+    controller.povLeft().onTrue(intake.intakeToIntakeAngle());
+    controller.povRight().onTrue(intake.intakeToStartAngle());
 
-    XBoxC.povLeft().whileTrue(intake.intakeUp());
-
-    XBoxC.povRight().whileTrue(intake.intakeDown());
-
-    XBoxC.leftBumper().whileTrue(intake.runIntake());
+    controller.leftBumper().whileTrue(intake.runIntake());
   }
 
   /**

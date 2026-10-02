@@ -83,31 +83,22 @@ public class Intake extends SubsystemBase {
         resting = false;
 
         Command moveIntakeUp = runOnce(() -> {
-            pidController.setGoal(45);
+            pidController.setGoal(Math.PI / 4);
         }).withTimeout(2);
 
         Command moveIntakeDown = runOnce(() -> {
-            pidController.setGoal(0);
+            pidController.setGoal(IntakeConstants.intakeAngle);
         }).withTimeout(2);
 
-        Command helpFeedBallsCommand = Commands.sequence(moveIntakeUp, moveIntakeDown);
+        Command helpFeedBallsCommand = Commands.sequence(moveIntakeUp, moveIntakeDown)
+                .finallyDo(() -> {
+                    pidController.setGoal(IntakeConstants.intakeAngle);
+                });
 
         return helpFeedBallsCommand;
     }
 
-    public Command intakeUp() {
-        return this.run(() -> {
-            pidController.setGoal(IntakeConstants.startingAngle);
-        });
-    }
-
-    public Command intakeDown() {
-        return this.run(() -> {
-            pidController.setGoal(IntakeConstants.intakeAngle);
-        });
-    }
-
-    public Command testSetPoint() {
+    public Command actavtivePID() {
         return this.runOnce(() -> {
             resting = false;
             pidController.setGoal(getEncoderInRadians());
@@ -116,7 +107,7 @@ public class Intake extends SubsystemBase {
 
     public Command adjustSetPoint(DoubleSupplier supplier) {
         return this.run(() -> {
-            var angleAdjust = supplier.getAsDouble() * 0.01;
+            var angleAdjust = supplier.getAsDouble() * 0.02;
             pidController.setGoal(pidController.getGoal().position +
                     angleAdjust);
         });
