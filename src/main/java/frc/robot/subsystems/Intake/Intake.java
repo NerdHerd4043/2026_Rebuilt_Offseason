@@ -66,6 +66,14 @@ public class Intake extends SubsystemBase {
         });
     }
 
+    public Command runIntakeReverse() {
+        return this.run(() -> {
+            intakingMotor.set(-IntakeConstants.intakeSpeed);
+        }).finallyDo(() -> {
+            intakingMotor.stopMotor();
+        });
+    }
+
     public Command intakeToStartAngle() {
         return this.runOnce(() -> {
             pidController.setGoal(IntakeConstants.startingAngle);
@@ -82,15 +90,18 @@ public class Intake extends SubsystemBase {
     public Command helpFeedBalls() {
         resting = false;
 
-        Command moveIntakeUp = runOnce(() -> {
+        Command moveIntakeUp = run(() -> {
             pidController.setGoal(Math.PI / 4);
-        }).withTimeout(2);
+        });
 
-        Command moveIntakeDown = runOnce(() -> {
+        Command moveIntakeDown = run(() -> {
             pidController.setGoal(IntakeConstants.intakeAngle);
+        });
+
+        Command wait = run(() -> {
         }).withTimeout(2);
 
-        Command helpFeedBallsCommand = Commands.sequence(moveIntakeUp, moveIntakeDown)
+        Command helpFeedBallsCommand = Commands.sequence(moveIntakeUp, wait, moveIntakeDown, wait)
                 .finallyDo(() -> {
                     pidController.setGoal(IntakeConstants.intakeAngle);
                 });

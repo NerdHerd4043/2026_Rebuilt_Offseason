@@ -104,22 +104,26 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
+    // flywheel PID
     controller.rightBumper().onTrue(flyWheel.runFlyWheel());
     controller.rightBumper().onFalse(flyWheel.stopFlyWheel());
 
+    // roller floor and shooter feeding
     controller.b().whileTrue(rollerFloor.feedCommand());
     controller.a().whileTrue(Commands.parallel(indexer.indexAndKickupCommand(), rollerFloor.feedCommand()));
 
+    // intake PID
     controller.x().whileTrue(intake.helpFeedBalls());
-
     controller.povDown().onTrue(intake.actavtivePID());
-
-    controller.povUp().onTrue(drivebase.resetGyro());
-
     controller.povLeft().onTrue(intake.intakeToIntakeAngle());
     controller.povRight().onTrue(intake.intakeToStartAngle());
 
+    // intaking
     controller.leftBumper().whileTrue(intake.runIntake());
+    controller.y().whileTrue(intake.runIntakeReverse());
+
+    // gyro reset
+    controller.povUp().onTrue(drivebase.resetGyro());
   }
 
   /**
