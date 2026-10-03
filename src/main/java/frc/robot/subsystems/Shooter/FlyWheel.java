@@ -64,7 +64,7 @@ public class FlyWheel extends SubsystemBase {
     }
 
     public Command runFlyWheel() {
-        return this.run(() -> {
+        return this.runOnce(() -> {
             pidController.setSetpoint(FlyWheelConstants.flyWheelSpeed,
                     ControlType.kVelocity);
         });
@@ -72,8 +72,7 @@ public class FlyWheel extends SubsystemBase {
 
     public Command stopFlyWheel() {
         return this.run(() -> {
-            pidController.setSetpoint(0,
-                    ControlType.kVoltage);
+            pidController.setSetpoint(0, ControlType.kVoltage);
         });
     }
 

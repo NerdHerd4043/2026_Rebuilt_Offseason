@@ -136,7 +136,7 @@ public class RobotContainer {
     controller.y().whileTrue(intake.runIntakeReverse());
 
     // gyro reset
-    controller.povUp().onTrue(drivebase.resetGyro());
+    controller.button(8).onTrue(drivebase.resetGyro());
   }
 
   private void configureNamedCommands() {
@@ -155,10 +155,6 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return null;
-  }
-
-  public void disabledInit() {
-    intake.disabledInit();
+    return autoChooser.getSelected();
   }
 }

@@ -157,8 +157,4 @@ public class Intake extends SubsystemBase {
         SmartDashboard.putBoolean("PID at setpoints", pidController.atSetpoint());
 
     }
-
-    public void disabledInit() {
-        resting = true;
-    }
 }
