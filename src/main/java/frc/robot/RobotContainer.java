@@ -12,8 +12,14 @@ import frc.robot.subsystems.Shooter.FlyWheel;
 import frc.robot.subsystems.Shooter.Indexer;
 import frc.robot.subsystems.drivebase.DriveConstants;
 import frc.robot.subsystems.drivebase.Drivebase;
+
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
+
 import cowlib.Util;
 import edu.wpi.first.epilogue.Logged;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -33,6 +39,8 @@ public class RobotContainer {
   Drivebase drivebase = new Drivebase();
   Intake intake = new Intake();
 
+  private SendableChooser<Command> autoChooser;
+
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
@@ -48,8 +56,13 @@ public class RobotContainer {
 
     CommandScheduler.getInstance().schedule(flyWheel.stopFlyWheel());
 
+    configureNamedCommands();
+    autoChooser = AutoBuilder.buildAutoChooser();
+    SmartDashboard.putData("Auto Mode", autoChooser);
+
     // Configure the trigger bindings
     configureBindings();
+
   }
 
   // Used to create an area around the center of the joystick where the input is
@@ -124,6 +137,12 @@ public class RobotContainer {
 
     // gyro reset
     controller.povUp().onTrue(drivebase.resetGyro());
+  }
+
+  private void configureNamedCommands() {
+    NamedCommands.registerCommand("Intake", intake.runIntake());
+    NamedCommands.registerCommand("Rev Up Flywheel", flyWheel.runFlyWheel());
+    NamedCommands.registerCommand("Stop Flywheel", flyWheel.stopFlyWheel());
   }
 
   /**
