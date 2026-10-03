@@ -143,6 +143,10 @@ public class RobotContainer {
     NamedCommands.registerCommand("Intake", intake.runIntake());
     NamedCommands.registerCommand("Rev Up Flywheel", flyWheel.runFlyWheel());
     NamedCommands.registerCommand("Stop Flywheel", flyWheel.stopFlyWheel());
+    NamedCommands.registerCommand("Actavtive Intake PID", intake.actavtivePID());
+    NamedCommands.registerCommand("Intake Down", intake.intakeToIntakeAngle());
+    NamedCommands.registerCommand("Feed",
+        Commands.parallel(indexer.indexAndKickupCommand(), rollerFloor.feedCommand()));
   }
 
   /**

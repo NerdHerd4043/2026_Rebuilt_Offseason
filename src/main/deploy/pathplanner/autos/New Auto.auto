@@ -3,7 +3,44 @@
   "command": {
     "type": "sequential",
     "data": {
-      "commands": []
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "left trench shoot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Rev Up Flywheel"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Actavtive Intake PID"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Intake Down"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 2.0
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Feed"
+          }
+        }
+      ]
     }
   },
   "resetOdom": true,
