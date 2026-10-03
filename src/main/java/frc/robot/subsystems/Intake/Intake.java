@@ -100,8 +100,10 @@ public class Intake extends SubsystemBase {
 
         Command wait = run(() -> {
         }).withTimeout(2);
+        Command wait2 = run(() -> {
+        }).withTimeout(2);
 
-        Command helpFeedBallsCommand = Commands.sequence(moveIntakeUp, wait, moveIntakeDown, wait)
+        Command helpFeedBallsCommand = Commands.sequence(moveIntakeUp, wait, moveIntakeDown, wait2)
                 .finallyDo(() -> {
                     pidController.setGoal(IntakeConstants.intakeAngle);
                 });
