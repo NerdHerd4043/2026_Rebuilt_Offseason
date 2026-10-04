@@ -39,6 +39,12 @@
           "data": {
             "name": "Shoot"
           }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Intake Up"
+          }
         }
       ]
     }

@@ -120,10 +120,12 @@ public class RobotContainer {
     // flywheel PID
     controller.rightBumper().onTrue(flyWheel.runFlyWheel());
     controller.rightBumper().onFalse(flyWheel.stopFlyWheel());
+    controller.a().onFalse(flyWheel.stopFlyWheel());
 
     // roller floor and shooter feeding
     controller.b().whileTrue(rollerFloor.feedCommand());
-    controller.a().whileTrue(Commands.parallel(indexer.indexAndKickupCommand(), rollerFloor.feedCommand()));
+    controller.a().whileTrue(
+        Commands.parallel(indexer.indexAndKickupCommand(), rollerFloor.feedCommand(), flyWheel.runFlyWheel()));
 
     // intake PID
     controller.x().whileTrue(intake.helpFeedBalls());
@@ -145,6 +147,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("Stop Flywheel", flyWheel.stopFlyWheel());
     NamedCommands.registerCommand("Actavtive Intake PID", intake.actavtivePID());
     NamedCommands.registerCommand("Intake Down", intake.intakeToIntakeAngle());
+    NamedCommands.registerCommand("Intake Up", intake.intakeToStartAngle());
     NamedCommands.registerCommand("Shoot",
         Commands.parallel(indexer.indexAndKickupCommand(), rollerFloor.feedCommand()));
   }

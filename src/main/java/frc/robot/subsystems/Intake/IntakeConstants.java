@@ -12,7 +12,7 @@ public class IntakeConstants {
 
     public static final int articulatingMotorCurrent = 40;
 
-    public static final double startingAngle = 2.61;
+    public static final double startingAngle = 2.587;
     public static final double intakeAngle = 0.0;
 
     public static final double testSetPoint = 1.05;

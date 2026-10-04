@@ -17,7 +17,6 @@ import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import com.revrobotics.spark.SparkFlex;
@@ -58,6 +57,10 @@ public class Intake extends SubsystemBase {
         SmartDashboard.putData(this.pidController);
     }
 
+    public void setResting(Boolean resting) {
+        this.resting = resting;
+    }
+
     public Command runIntake() {
         return this.run(() -> {
             intakingMotor.set(IntakeConstants.intakeSpeed);
@@ -90,25 +93,9 @@ public class Intake extends SubsystemBase {
     public Command helpFeedBalls() {
         resting = false;
 
-        Command moveIntakeUp = run(() -> {
-            pidController.setGoal(Math.PI / 4);
+        return this.runOnce(() -> {
+            pidController.setGoal(Math.PI / 2);
         });
-
-        Command moveIntakeDown = run(() -> {
-            pidController.setGoal(IntakeConstants.intakeAngle);
-        });
-
-        Command wait = run(() -> {
-        }).withTimeout(2);
-        Command wait2 = run(() -> {
-        }).withTimeout(2);
-
-        Command helpFeedBallsCommand = Commands.sequence(moveIntakeUp, wait, moveIntakeDown, wait2)
-                .finallyDo(() -> {
-                    pidController.setGoal(IntakeConstants.intakeAngle);
-                });
-
-        return helpFeedBallsCommand;
     }
 
     public Command actavtivePID() {
