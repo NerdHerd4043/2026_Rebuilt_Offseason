@@ -54,6 +54,15 @@ public class FlyWheel extends SubsystemBase {
 
         this.encoder = rightFlyWheelMotor.getEncoder();
         this.pidController = rightFlyWheelMotor.getClosedLoopController();
+
+        Shuffleboard.getTab("LiveWindow").add("Flywheel At Setpoint", flywheelAtSetpoint());
+    }
+
+    private boolean flywheelAtSetpoint() {
+        if (pidController.getSetpoint() <= this.encoder.getVelocity()) {
+            return true;
+        }
+        return false;
     }
 
     public Command runCommand() {
@@ -84,7 +93,5 @@ public class FlyWheel extends SubsystemBase {
         SmartDashboard.putNumber("Flywheel current", this.rightFlyWheelMotor.getOutputCurrent());
         SmartDashboard.putNumber("Flywheel Setpoint", this.pidController.getSetpoint());
         SmartDashboard.putNumber("Flywheel Target", FlyWheelConstants.flyWheelSpeed);
-
-        Shuffleboard.getTab("LiveWindow").add("Flywheel At Setpoint", this.pidController.isAtSetpoint());
     }
 }
