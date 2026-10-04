@@ -10,6 +10,7 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkFlexConfig;
 
 import edu.wpi.first.epilogue.Logged;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -83,5 +84,7 @@ public class FlyWheel extends SubsystemBase {
         SmartDashboard.putNumber("Flywheel current", this.rightFlyWheelMotor.getOutputCurrent());
         SmartDashboard.putNumber("Flywheel Setpoint", this.pidController.getSetpoint());
         SmartDashboard.putNumber("Flywheel Target", FlyWheelConstants.flyWheelSpeed);
+
+        Shuffleboard.getTab("LiveWindow").add("Flywheel At Setpoint", this.pidController.isAtSetpoint());
     }
 }
