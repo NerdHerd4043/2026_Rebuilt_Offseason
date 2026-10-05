@@ -135,7 +135,7 @@ public class RobotContainer {
 
     // intaking
     controller.leftBumper().whileTrue(intake.runIntake());
-    controller.y().whileTrue(intake.runIntakeReverse());
+    controller.y().whileTrue(Commands.parallel(intake.runIntakeReverse(), rollerFloor.reverseFeedCommand()));
 
     // gyro reset
     controller.button(8).onTrue(drivebase.resetGyro());

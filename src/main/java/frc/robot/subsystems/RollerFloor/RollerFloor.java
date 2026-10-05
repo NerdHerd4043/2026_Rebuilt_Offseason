@@ -30,4 +30,12 @@ public class RollerFloor extends SubsystemBase {
             rollerFloorMotor.stopMotor();
         });
     }
+
+    public Command reverseFeedCommand() {
+        return this.run(() -> {
+            rollerFloorMotor.set(RollerFloorConstants.rollerFloorSpeed);
+        }).finallyDo(() -> {
+            rollerFloorMotor.stopMotor();
+        });
+    }
 }

@@ -38,6 +38,9 @@ public class SwerveModule {
     final SparkMaxConfig angleMotorConfig = new SparkMaxConfig();
     final SparkMaxConfig speedMotorConfig = new SparkMaxConfig();
 
+    angleMotorConfig.smartCurrentLimit(40);
+    speedMotorConfig.smartCurrentLimit(40);
+
     speedMotorConfig.inverted(driveInverted);
 
     double driveReduction = 1.0 / 6.75;
